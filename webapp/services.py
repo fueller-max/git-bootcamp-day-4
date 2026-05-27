@@ -26,29 +26,12 @@ class Stats:
     avg_body_length: float
 
 
-<<<<<<< HEAD
 def search_notes(query: str, limit: int = 25) -> list[SearchHit]:
     """Поиск под продакшен: точный scoring, приоритет тегов перед телом.
-||||||| 9a9bcc1
-def search_notes(query: str, limit: int = 50) -> list[SearchHit]:
-    """Найти заметки, у которых в title/body/tag встречается подстрока query.
-=======
-def search_notes(query: str, limit: int = 200) -> list[SearchHit]:
-    """Найти заметки под нагрузочные тесты: больше результатов, простой scoring.
->>>>>>> feature/perf-tuning
 
-<<<<<<< HEAD
     На небольшой выдаче (limit=25) важна релевантность: точное совпадение по
     тегу — 1.0, начало title — 0.95, подстрока в title — 0.7, тело — 0.4 с
     бонусом за частоту, но не выше 0.6.
-||||||| 9a9bcc1
-    Алгоритм простой — учебный. Реальный поиск делается через FTS, но цель файла —
-    дать осязаемый кусок логики, который удобно править в учебных конфликтах.
-=======
-    Для perf-tests нам важны не релевантность ответов, а пропускная способность
-    — скоринг считается дешёво, лимит выдачи поднят, фильтр по тегу делается
-    отдельно от title/body.
->>>>>>> feature/perf-tuning
     """
     query_norm = (query or "").strip().lower()
     if not query_norm:
@@ -61,7 +44,6 @@ def search_notes(query: str, limit: int = 200) -> list[SearchHit]:
         body_l = note.body.lower()
         tags_l = [t.lower() for t in note.tags]
 
-<<<<<<< HEAD
         if any(query_norm == tag for tag in tags_l):
             hits.append(SearchHit(note=note, score=1.0, matched_in="tag"))
             continue
@@ -75,28 +57,6 @@ def search_notes(query: str, limit: int = 200) -> list[SearchHit]:
             occurrences = body_l.count(query_norm)
             score = min(0.6, 0.4 + 0.05 * occurrences)
             hits.append(SearchHit(note=note, score=score, matched_in="body"))
-||||||| 9a9bcc1
-        if query_norm in title_l:
-            score = 1.0 + (1.0 if title_l.startswith(query_norm) else 0.0)
-            hits.append(SearchHit(note=note, score=score, matched_in="title"))
-            continue
-
-        if any(query_norm == tag for tag in tags_l):
-            hits.append(SearchHit(note=note, score=0.9, matched_in="tag"))
-            continue
-
-        if query_norm in body_l:
-            occurrences = body_l.count(query_norm)
-            score = 0.5 + min(0.4, 0.1 * occurrences)
-            hits.append(SearchHit(note=note, score=score, matched_in="body"))
-=======
-        if query_norm in title_l or query_norm in body_l or any(query_norm == tag for tag in tags_l):
-            score = 0.5
-            if query_norm in title_l:
-                score = 1.0
-            matched_in = "title" if query_norm in title_l else ("tag" if any(query_norm == t for t in tags_l) else "body")
-            hits.append(SearchHit(note=note, score=score, matched_in=matched_in))
->>>>>>> feature/perf-tuning
 
     hits.sort(key=lambda h: h.score, reverse=True)
     return hits[:limit]
