@@ -4,6 +4,7 @@
 {% block title %}Notes — список заметок{% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
    <section class="welcome">
     <h2 class="welcome__title">Добро пожаловать в Notes</h2>
     <p class="welcome__lead">
@@ -14,12 +15,20 @@
    </section>
 
    <section class="search">
+||||||| 9a9bcc1
+  <section class="search">
+=======
+ <section class="search search--perf">
+    <div class="search__perf-banner">
+      <b>Perf mode:</b> поиск настроен под нагрузочные тесты — увеличен лимит выдачи (до 200), упрощён scoring.
+    </div>
+>>>>>>> feature/perf-tuning
     <form method="get" action="{{ url_for('notes.index') }}" class="search__form">
       <input
         type="search"
         name="q"
         value="{{ query }}"
-        placeholder="Поиск по заголовку, телу или тегу…"
+        placeholder="Поиск (perf mode)…"
         class="search__input"
       >
       <button type="submit" class="search__submit">Искать</button>
@@ -27,10 +36,11 @@
 
     {% if query %}
       <p class="search__summary">
-        Найдено заметок по запросу «{{ query }}»: <b>{{ hits|length }}</b>.
+        Perf-режим. Найдено: <b>{{ hits|length }}</b> (лимит 200).
       </p>
     {% endif %}
   </section>
+
 
   <section class="composer">
     <h2 class="composer__title">Новая заметка</h2>

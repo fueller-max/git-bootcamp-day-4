@@ -40,12 +40,28 @@ class DatabaseSection:
 # ---------------------------------------------------------------------------
 
 @dataclass
+<<<<<<< HEAD
 class PerformanceSection:            # Set production minumum settigns
     REQUEST_TIMEOUT_SEC: int = 10
     DB_POOL_SIZE: int = 3
     SEARCH_RESULTS_LIMIT: int = 25
     CACHE_TTL_SEC: int = 30
     GUNICORN_WORKERS: int = 3
+||||||| 9a9bcc1
+class PerformanceSection:
+    REQUEST_TIMEOUT_SEC: int = 30
+    DB_POOL_SIZE: int = 5
+    SEARCH_RESULTS_LIMIT: int = 50
+    CACHE_TTL_SEC: int = 60
+    GUNICORN_WORKERS: int = 2
+=======
+class PerformanceSection:
+    REQUEST_TIMEOUT_SEC: int = 120      # Increase timeout 30 -> 120
+    DB_POOL_SIZE: int = 20              # Increase 5 -> 20 
+    SEARCH_RESULTS_LIMIT: int = 200     # 50 -> 200
+    CACHE_TTL_SEC: int = 300            # 60 -> 300
+    GUNICORN_WORKERS: int = 8           # 2 -> 8  
+>>>>>>> feature/perf-tuning
 
 
 # ---------------------------------------------------------------------------
